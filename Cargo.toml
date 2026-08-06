@@ -1,0 +1,8 @@
+[package]
+name = "bt_for_bevy"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bevy = { version = "0.16.1", features = ["dynamic_linking"] }
+log = "0.4.26"
