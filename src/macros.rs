@@ -158,8 +158,17 @@ macro_rules! bt_repeat {
 }
 
 /// Utility for tests. Ticks a specified BehaviorTree and returns the result.
+///
+/// The data defaults to `()` and the delta to `0.`. Pass a delta to tick a tree over time,
+/// or both a data and a delta to tick a tree carrying data.
 #[macro_export]
 macro_rules! bt_tick_test {
+    ($bt:expr, $commands:expr, $entity:expr, $data:expr, $delta:expr) => {
+        $bt.tick($commands, $entity, $data, $delta)
+    };
+    ($bt:expr, $commands:expr, $entity:expr, $delta:expr) => {
+        $bt.tick($commands, $entity, &mut (), $delta)
+    };
     ($bt:expr, $commands:expr, $entity:expr) => {
         $bt.tick($commands, $entity, &mut (), 0.)
     };

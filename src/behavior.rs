@@ -40,7 +40,7 @@ pub enum BtBehavior<Data> {
         Option<Box<BtNode<Data>>>,
     ),
     /// Offers access to bevy's Commands and entity directly inside the BehaviorTree.
-    /// Allows to insert/remove bevy Components to/from the entity.
+    /// Allows inserting or removing bevy Components to the entity.
     /// Always successful (use with an `Invert` decorator to make it fail).
     Commands(String, fn(&mut Commands, Entity, &Data)),
     /// Useful to represent multiple different courses of action,
@@ -61,26 +61,17 @@ impl<D> BtBehavior<D> {
         delta: f32,
     ) -> BtNodeStatus {
         match self {
-            // ****************
-            // *    Action    *
-            // ****************
             Self::Action(name, action) => {
                 trace!("Action {:}", name);
 
                 action(data)
             }
-            // ****************
-            // *    Action    *
-            // ****************
             Self::SuccessfulAction(name, action) => {
                 trace!("SuccessfulAction {:}", name);
                 action(data);
 
                 BtNodeStatus::Success
             }
-            // *******************
-            // *    Condition    *
-            // *******************
             Self::Condition(name, condition) => {
                 trace!("Condition {:}", name);
 
@@ -90,9 +81,6 @@ impl<D> BtBehavior<D> {
                     BtNodeStatus::Failure
                 }
             }
-            // *******************
-            // *    Condition    *
-            // *******************
             Self::Gate(name, condition, positive_node, negative_node) => {
                 trace!("Gate {:}", name);
 
@@ -105,18 +93,12 @@ impl<D> BtBehavior<D> {
                     }
                 }
             }
-            // **************************
-            // *    Insert Component    *
-            // **************************
             Self::Commands(name, handle) => {
                 trace!("Commands {:}", name);
                 handle(commands, entity, data);
 
                 BtNodeStatus::Success
             }
-            // ******************
-            // *    Selector    *
-            // ******************
             Self::Selector(name, children, index) => {
                 trace!("Selector {:}", name);
 
@@ -130,9 +112,6 @@ impl<D> BtBehavior<D> {
                     (BtNodeStatus::Failure, BtNodeStatus::Success),
                 )
             }
-            // ******************
-            // *    Sequence    *
-            // ******************
             Self::Sequence(name, children, index) => {
                 trace!("Sequence {:}", name);
 
@@ -146,9 +125,6 @@ impl<D> BtBehavior<D> {
                     (BtNodeStatus::Success, BtNodeStatus::Failure),
                 )
             }
-            // **************
-            // *    Wait    *
-            // **************
             Self::Wait(name, duration, elapsed) => {
                 trace!("Wait {:}", name);
 
@@ -185,7 +161,7 @@ impl<D> BtBehavior<D> {
     }
 }
 
-/// Composites are nodes which tick a series of children nodes in a specific order.
+/// Composites are nodes that tick a series of children nodes in a specific order.
 ///
 /// Example: Sequences and Selectors
 fn tick_composite<D>(
