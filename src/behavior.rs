@@ -1,5 +1,5 @@
 use crate::node::{BtNode, BtNodeStatus};
-use bevy::prelude::{Commands, Entity};
+use bevy_ecs::prelude::{Commands, Entity};
 use log::trace;
 
 /// Behavior Tree

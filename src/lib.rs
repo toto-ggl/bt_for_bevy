@@ -8,7 +8,7 @@ pub mod prelude;
 mod tests {
     use crate::bt_tick_test;
     use crate::prelude::*;
-    use bevy::prelude::{Commands, Component, Entity, World};
+    use bevy_ecs::prelude::{Commands, Component, Entity, World};
 
     fn successful_action(_: &mut ()) -> BtNodeStatus {
         BtNodeStatus::Success

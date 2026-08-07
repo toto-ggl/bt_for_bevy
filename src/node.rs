@@ -1,6 +1,6 @@
 use crate::behavior::BtBehavior;
 use crate::decorator::BtDecorator;
-use bevy::prelude::{Commands, Component, Entity};
+use bevy_ecs::prelude::{Commands, Component, Entity};
 
 /// Node
 #[derive(Component)]
